@@ -16,6 +16,25 @@ UIS.JumpRequest:Connect(function()
     end
 end)
 
+task.spawn(function()
+    while true do
+        task.wait(0.2)
+        local c = LP.Character
+        if c and T.AntiRagdoll then
+            local h = c:FindFirstChildOfClass("Humanoid")
+            if h then
+                h:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, false)
+                h:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
+                h:ChangeState(Enum.HumanoidStateType.GettingUp)
+                for _,v in pairs(c:GetDescendants()) do
+                    if v:IsA("BallSocketConstraint") then
+                        v:Destroy()
+                    end
+                end
+            end
+        end
+    end
+end)
 RS.Stepped:Connect(function()
     local c = LP.Character
     if not c then return end
